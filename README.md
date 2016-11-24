@@ -1,1 +1,1 @@
-# scgai-javis
+# get-javis
