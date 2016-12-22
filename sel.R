@@ -1,4 +1,4 @@
-devtools::install_github("hrbrmstr/slackr")
+# devtools::install_github("hrbrmstr/slackr")
 pack<-list("RSelenium","httr","rvest","jsonlite","slackr")
 lapply(pack,require, character.only = TRUE)
 
@@ -9,8 +9,8 @@ lapply(pack,require, character.only = TRUE)
 # save(email,passwd,incoming_webhook_url,api_token,file="auth.RData")
 
 load("auth.RData")
-remDr <- remoteDriver(remoteServerAddr = "192.168.99.100",
-                                               port = 32768L)
+pJS <- phantom()
+remDr <- remoteDriver(browserName = 'phantomjs')
 remDr$open()
 Sys.sleep(5)
 remDr$navigate("https://manager.jobis.co/login")
