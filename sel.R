@@ -10,18 +10,21 @@ lapply(pack,require, character.only = TRUE)
 
 load("auth.RData")
 pJS <- phantom()
+
+# Sys.sleep(5)
+
 remDr <- remoteDriver(browserName = 'phantomjs')
 remDr$open()
 Sys.sleep(5)
 remDr$navigate("https://manager.jobis.co/login")
 
-webElem <- remDr$findElement(using = "xpath", "/html/body/div[2]/div/div/section/div/div/form/div/div/div[1]/div/input")
+webElem <- remDr$findElement("name","useremail")
 webElem$sendKeysToElement(list(email))
-webElem <- remDr$findElement(using = "xpath", "/html/body/div[2]/div/div/section/div/div/form/div/div/div[2]/div/input")
+webElem <- remDr$findElement("name", "passwd")
 webElem$sendKeysToElement(list(passwd))
-webElem <- remDr$findElement(using = "xpath", "/html/body/div[2]/div/div/section/div/div/form/div/div/div[4]/input")
+webElem <- remDr$findElement("class","form-submit")
 webElem$clickElement()
-Sys.sleep(5)
+# Sys.sleep(5)
 
 remDr$navigate("https://manager.jobis.co/receipts#tab2")
 
