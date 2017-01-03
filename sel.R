@@ -3,9 +3,6 @@ pack<-list("RSelenium","httr","rvest","jsonlite","slackr","lubridate")
 lapply(pack,require, character.only = TRUE)
 load("/home/auth.RData")
 
-pJS <- phantom()
-remDr <- remoteDriver(browserName = 'phantomjs')
-remDr$open()
 times<-1
 bef<-""
 to<-today()
@@ -22,7 +19,9 @@ times<-times+1
 # incoming_webhook_url<-"XXXXXXX"
 # api_token<-"XXXXXXXXXXX"
 # save(email,passwd,incoming_webhook_url,api_token,file="auth.RData")\
-
+pJS <- phantom()
+remDr <- remoteDriver(browserName = 'phantomjs')
+remDr$open()
 remDr$navigate("https://manager.jobis.co/login")
 
 webElem <- remDr$findElement("name","useremail")
@@ -34,6 +33,8 @@ webElem$clickElement()
 
 remDr$navigate("https://manager.jobis.co/receipts#tab2")
 data <- remDr$getPageSource()[[1]]
+      remDr$close()
+pJS$stop()
 chk<-read_html(data) %>% html_nodes("a.has-ul span span.badge") %>% html_text()
 slackrSetup(channel="#test", 
             incoming_webhook_url=incoming_webhook_url,
@@ -51,4 +52,5 @@ if(chk[1]!="0"){
       msg<-diff(tem,bef)
       slackr_msg(msg)
       bef<-tem
+
 }
