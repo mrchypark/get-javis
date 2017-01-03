@@ -19,8 +19,8 @@ times<-times+1
 # incoming_webhook_url<-"XXXXXXX"
 # api_token<-"XXXXXXXXXXX"
 # save(email,passwd,incoming_webhook_url,api_token,file="auth.RData")\
-pJS <- phantom()
-remDr <- remoteDriver(browserName = 'phantomjs')
+RSelenium::startServer()
+remDr <- remoteDriver(browserName = "phantomjs")
 remDr$open()
 remDr$navigate("https://manager.jobis.co/login")
 
@@ -33,8 +33,8 @@ webElem$clickElement()
 
 remDr$navigate("https://manager.jobis.co/receipts#tab2")
 data <- remDr$getPageSource()[[1]]
-      remDr$close()
-pJS$stop()
+remDr$close()
+remDr$closeServer()
 chk<-read_html(data) %>% html_nodes("a.has-ul span span.badge") %>% html_text()
 slackrSetup(channel="#test", 
             incoming_webhook_url=incoming_webhook_url,
