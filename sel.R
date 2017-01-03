@@ -8,6 +8,7 @@ remDr <- remoteDriver(browserName = 'phantomjs')
 remDr$open()
 times<-1
 bef<-""
+to<-today()
 
 while(times>0){
 print(paste0(today()," / ",times))
