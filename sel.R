@@ -7,7 +7,7 @@ pJS <- phantom()
 times<-1
 
 while(times>0){
-print(paste0(today()," ",times)
+print(paste0(today()," / ",times))
 Sys.sleep(60)
 times<-times+1
       if(today()!=to){times<-1}
