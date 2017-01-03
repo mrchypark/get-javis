@@ -1,7 +1,7 @@
 # devtools::install_github("hrbrmstr/slackr")
 pack<-list("RSelenium","httr","rvest","jsonlite","slackr","lubridate")
 lapply(pack,require, character.only = TRUE)
-load("./auth.RData")
+load("/home/auth.RData")
 
 times<-1
 bef<-""
