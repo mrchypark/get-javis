@@ -1,7 +1,7 @@
 # devtools::install_github("hrbrmstr/slackr")
 pack<-list("RSelenium","httr","rvest","jsonlite","slackr","lubridate")
 lapply(pack,require, character.only = TRUE)
-load("/home/auth.RData")
+load("./auth.RData")
 
 times<-1
 bef<-""
@@ -48,9 +48,9 @@ if(chk[1]!="0"){
             incoming_webhook_url=incoming_webhook_url,
             api_token=api_token)
       slackr_msg(paste0(today()," / ",times))
-      tem<-readLines("sel.Rout")
-      msg<-diff(tem,bef)
-      slackr_msg(msg)
-      bef<-tem
+      # tem<-readLines("sel.Rout")
+      # msg<-diff(tem,bef)
+      # slackr_msg(msg)
+      # bef<-tem
 
 }
