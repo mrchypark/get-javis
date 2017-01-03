@@ -19,7 +19,7 @@ times<-times+1
 # incoming_webhook_url<-"XXXXXXX"
 # api_token<-"XXXXXXXXXXX"
 # save(email,passwd,incoming_webhook_url,api_token,file="auth.RData")\
-option(warn=-1)
+options(warn=-1)
 pJS <- phantom()
 remDr <- remoteDriver(browserName = "phantomjs")
 remDr$open()
