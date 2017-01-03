@@ -21,18 +21,20 @@ times<-times+1
 # save(email,passwd,incoming_webhook_url,api_token,file="auth.RData")\
 options(warn=-1)
 pJS <- phantom()
+Sys.sleep(10)
 remDr <- remoteDriver(browserName = "phantomjs")
 remDr$open()
 remDr$navigate("https://manager.jobis.co/login")
-
+Sys.sleep(5)
 webElem <- remDr$findElement("name","useremail")
 webElem$sendKeysToElement(list(email))
 webElem <- remDr$findElement("name", "passwd")
 webElem$sendKeysToElement(list(passwd))
 webElem <- remDr$findElement("class","form-submit")
 webElem$clickElement()
-
+Sys.sleep(5)
 remDr$navigate("https://manager.jobis.co/receipts#tab2")
+      Sys.sleep(10)
 data <- remDr$getPageSource()[[1]]
 remDr$close()
 pJS$stop() 
