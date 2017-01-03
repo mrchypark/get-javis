@@ -28,13 +28,12 @@ webElem$clickElement()
 
 remDr$navigate("https://manager.jobis.co/receipts#tab2")
 data <- remDr$getPageSource()[[1]]
-chk<-read_html(data) %>% html_nodes("a.has-ul span span.badge") %>% html_text()[1]
-
+chk<-read_html(data) %>% html_nodes("a.has-ul span span.badge") %>% html_text()
 slackrSetup(channel="#test", 
             incoming_webhook_url=incoming_webhook_url,
             api_token=api_token)
 
-if(chk!=0){
+if(chk[1]!=0){
             slackr_msg(iconv("개인 영수증이 확인되었습니다. 수정해 주세요.",to="UTF-8"))
             }
 
