@@ -28,7 +28,7 @@ webElem$clickElement()
 
 remDr$navigate("https://manager.jobis.co/receipts#tab2")
 
-remDr$navigate("https://manager.jobis.co/ajax_card/0?_=1479986686578")
+remDr$navigate("https://manager.jobis.co/company#tab2")
 tem <- remDr$getPageSource()[[1]]
 tem <- tem %>% read_html() %>% html_node("pre") %>% html_text()
 fromJSON(tem)
