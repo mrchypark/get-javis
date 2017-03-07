@@ -1,59 +1,47 @@
-# devtools::install_github("hrbrmstr/slackr")
-pack<-list("RSelenium","httr","rvest","jsonlite","slackr","lubridate")
+# devtools::install_github("hadley/rvest")
+pack<-list("httr","rvest","jsonlite","slackr","lubridate")
 lapply(pack,require, character.only = TRUE)
-load("/home/auth.RData")
-
-times<-1
-bef<-""
-to<-today()
-
-while(times>0){
-print(paste0(today()," / ",times))
-#Sys.sleep(60)
-times<-times+1
-      if(today()!=to){times<-1}
-      to<-today()
+load("./auth.RData")
 
 # email  <- "XXXXXXXXX"
 # passwd <- "XXXXXXXXX"
 # incoming_webhook_url<-"XXXXXXX"
 # api_token<-"XXXXXXXXXXX"
-# save(email,passwd,incoming_webhook_url,api_token,file="auth.RData")\
-options(warn=-1)
-pJS <- phantom()
-Sys.sleep(10)
-remDr <- remoteDriver(browserName = "phantomjs")
-remDr$open()
-remDr$navigate("https://manager.jobis.co/login")
-Sys.sleep(5)
-webElem <- remDr$findElement("name","useremail")
-webElem$sendKeysToElement(list(email))
-webElem <- remDr$findElement("name", "passwd")
-webElem$sendKeysToElement(list(passwd))
-webElem <- remDr$findElement("class","form-submit")
-webElem$clickElement()
-Sys.sleep(5)
-remDr$navigate("https://manager.jobis.co/receipts#tab2")
-      Sys.sleep(10)
-data <- remDr$getPageSource()[[1]]
-remDr$close()
-pJS$stop() 
-chk<-read_html(data) %>% html_nodes("a.has-ul span span.badge") %>% html_text()
-slackrSetup(channel="#test", 
-            incoming_webhook_url=incoming_webhook_url,
-            api_token=api_token)
+# save(email,passwd,incoming_webhook_url,api_token,file="auth.RData")
 
-if(chk[1]!="0"){
-            text_slackr(iconv("개인 영수증이 확인되었습니다. 수정해 주세요.",to="UTF-8"), as_user=FALSE)
-            send_chk<-chk
-            }
-      slackrSetup(channel="#jobisbotchk", 
-            incoming_webhook_url=incoming_webhook_url,
-            api_token=api_token)
-      slackr_msg(paste0(today()," / ",times))
-      # tem<-readLines("sel.Rout")
-      # msg<-diff(tem,bef)
-      # slackr_msg(msg)
-      # bef<-tem
 
+jobis <- html_session("https://manager.jobis.co/login")
+
+login <- jobis %>%
+  html_node("form") %>%
+  html_form() %>%
+  set_values(
+    useremail = email,
+    passwd = passwd
+  )
+
+logged_in <- jobis %>% submit_form(login)
+
+chk_p <- logged_in %>%
+  jump_to("/dashboard") %>%
+  html_nodes(".badge-primary") %>%
+  html_text()
+
+if(length(chk_p)==3){chk_p<-chk_p[2]}
+
+if(chk_p!="0"){
+  cont<-paste0("개인 영수증이 ",chk_p,"건 확인되었습니다. 수정해 주세요.")
+  POST(incoming_webhook_url,body=list(text=iconv(cont,to="UTF-8")),encode="json")
+  send_chk<-chk_p
 }
+
+usage <- logged_in %>%
+  jump_to("/ajax_card/0") %>%
+  read_html() %>%
+  html_nodes("p") %>%
+  html_text() %>%
+  fromJSON()
+
+usage <- as.data.frame(usage$data)
+names(usage)<-c("num","useDate","user","purpose","comName","submitDate","state","rejactRs","amount","tax")
+
