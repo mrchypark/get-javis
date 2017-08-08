@@ -1,0 +1,6 @@
+SHELL=/bin/bash
+PATH=/usr/local/bin/:/sbin:/bin:/usr/sbin:/usr/bin
+
+0 6-20/6 * * 1-5 cd / && Rscript chk.R 2> e1.log
+50 8 * * 1-5 cd / && Rscript daily.R 2> e2.log
+0 17 * * 1-5 cd / && Rscript warnpp.R 2> e3.log
