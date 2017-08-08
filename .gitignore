@@ -2,4 +2,4 @@
 .Rhistory
 .RData
 .Ruserdata
-auth.RData
+*.RData
