@@ -25,11 +25,11 @@ warnpp <- thmonth[is.na(thmonth$purpose),"user"] %>% unique %>% as.character()
 cont<-paste0("안녕하세요 금일의 예산 현황입니다.\n\n",
              "\t총 사용 금액: ", formatC(sum(totamt$sum), format="d", big.mark=","), "원\n",
              "\t접 대 비: ", totamt[totamt$purpose=="식대","sumc"] %>% as.character(), 
-             "원 / 540,000원(", totamt[totamt$purpose=="식대","sum"]/540000*100 %>% round(2),"%)\n",
+             "원 / 50,000원(", totamt[totamt$purpose=="식대","sum"]/50000*100 %>% round(2),"%)\n",
              "\t식음료대: ", totamt[totamt$purpose=="음료","sumc"] %>% as.character(), 
-             "원 / 300,000원(", totamt[totamt$purpose=="음료","sum"]/540000*100 %>% round(2),"%)\n",
+             "원 / 30,000원(", totamt[totamt$purpose=="음료","sum"]/30000*100 %>% round(2),"%)\n",
              "\t소모품비: ", totamt[totamt$purpose=="사무용품","sumc"] %>% as.character(), 
-             "원 / 400,000원(", totamt[totamt$purpose=="사무용품","sum"]/540000*100 %>% round(2),"%)\n\n")
+             "원 / 40,000원(", totamt[totamt$purpose=="사무용품","sum"]/40000*100 %>% round(2),"%)\n\n")
 if(!identical(warnpp, character(0))){
   war<-paste0(paste0(warnpp, collapse = ", "),"님 께서는 영수증 메모를 입력해주세요.\n",
   "메모는 아래 3가지 중 하나를 사용해주세요.\n",
