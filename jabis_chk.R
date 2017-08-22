@@ -52,7 +52,7 @@ names(usage)<-c("num","useDate","user","purpose","comName","submitDate","state",
 usage$num <- as.numeric(usage$num)
 usage$useDate<-ymd_hm(usage$useDate)
 usage$user <- as.factor(usage$user)
-usage$purpose <- factor(usage$purpose, levels = c("식대","음료","사무용품"))
+usage$purpose <- factor(usage$purpose, levels = c("식대","음료","사무용품","미입력"))
 usage$submitDate<-ymd_hm(usage$submitDate)
 usage$state<-unlist(lapply(usage$state, function(x) html_text(read_html(x))))
 usage$amount <- as.numeric(gsub(",","",usage$amount))
